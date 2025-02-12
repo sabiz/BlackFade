@@ -24,8 +24,7 @@ mkdir build
 cd build
 
 cmake ..
-
-MSBuild BlackFade.sln -p:Configuration=Release
+cmake --build . --config Release
 # It will be output to .\Release\BlackFade.exe
 ```
 

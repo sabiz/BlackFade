@@ -13,6 +13,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
 
   static UINT_PTR timerId = 0;
   static int windowAlpha = 0;
+  static LPARAM startMousePos = 0;
 
   switch (uMsg) {
   case WM_CREATE:
@@ -26,12 +27,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
       KillTimer(hwnd, timerId);
     }
     return 0;
-  case WM_KEYDOWN:   // fall through
   case WM_MOUSEMOVE: // fall through
-    // skip input events in early startup
-    if (windowAlpha <= 100) {
+    if (startMousePos == 0) {
+      startMousePos = lParam;
+    }
+    if (startMousePos == lParam) {
+      // Mouse not moved
       return 0;
     }
+  case WM_KEYDOWN:   // fall through
   case WM_DESTROY:
     PostQuitMessage(0);
     return 0;
