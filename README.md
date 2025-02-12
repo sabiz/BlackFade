@@ -1,7 +1,7 @@
 # BlackFade
 
 
-![](.\res\original\256x256.png)
+![](./res/original/256x256.png)
 
 ## :sparkles:Features
 
