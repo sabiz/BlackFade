@@ -47,7 +47,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam,
 ////////////////////////////////////////////////////////////////////////
 /// Initialize the window
 ////////////////////////////////////////////////////////////////////////
-BOOL Init(HINSTANCE hInstance) {
+BOOL Init(HINSTANCE hInstance, const BlackFadeOptions* options) {
 
   /**
    * Register the window class.
@@ -82,14 +82,33 @@ BOOL Init(HINSTANCE hInstance) {
   ShowWindow(hwnd, SW_SHOW);
   ShowCursor(FALSE);
   UpdateWindow(hwnd);
+
+  if (options->keepAwake) {
+    // スリープ防止
+    EXECUTION_STATE state = SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
+    if (state == 0) {
+      MessageBoxA(NULL, "Failed to set execution state", "Error", MB_ICONERROR);
+      return FALSE;
+    }
+  }
+
   return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////
+/// Cleanup function
+////////////////////////////////////////////////////////////////////////
+void Cleanup(const BlackFadeOptions* options) {
+  if (options->keepAwake) {
+    // スリープ防止解除
+    SetThreadExecutionState(ES_CONTINUOUS);
+  }
+}
+////////////////////////////////////////////////////////////////////////
 // Start the black fade
 ////////////////////////////////////////////////////////////////////////
-void RunBlackFade(HINSTANCE hInstance) {
-  if (Init(hInstance) == FALSE) {
+void RunBlackFade(HINSTANCE hInstance, const BlackFadeOptions* options) {
+  if (Init(hInstance, options) == FALSE) {
     return;
   }
 
@@ -104,4 +123,5 @@ void RunBlackFade(HINSTANCE hInstance) {
       DispatchMessage(&msg);
     }
   }
+  Cleanup(options);
 }

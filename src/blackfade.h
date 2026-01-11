@@ -3,6 +3,10 @@
 
 # include <Windows.h>
 
-void RunBlackFade(HINSTANCE);
+typedef struct {
+    int keepAwake;
+} BlackFadeOptions;
+
+void RunBlackFade(HINSTANCE hInstance, const BlackFadeOptions* options);
 
 #endif // BLACK_FADE_H

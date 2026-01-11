@@ -30,7 +30,18 @@ cmake --build . --config Release
 
 ## :hatched_chick:Getting started
 
-Run `BlackFade.exe` !!
+
+### Command Line Option
+
+You can use the `--keep-awake` option to prevent the PC from sleeping or turning off the display, and to keep the black window open even after fade-in.
+
+Example:
+
+```
+BlackFade.exe --keep-awake
+```
+
+Without this option, the window will close as usual when you press any key or move the mouse after fade-in.
 
 ## :chicken:FAQ
 
